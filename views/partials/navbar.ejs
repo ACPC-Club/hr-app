@@ -1,0 +1,100 @@
+<header>
+  <nav
+    class="navbar navbar-expand-lg navbar-light bg-light border-bottom box-shadow mb-3"
+  >
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">ACPC HR System</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/privacy">Privacy</a>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="expenseDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Expense
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="expenseDropdown">
+              <li><a class="dropdown-item" href="/add">Add Expense</a></li>
+              <li>
+                <a class="dropdown-item" href="/manage">Manage Categories</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="/expenses">View Expenses</a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="/"
+              id="dashboardDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Dashboard
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="dashboardDropdown">
+              <li><a class="dropdown-item" href="/profile">Profile</a></li>
+              <li>
+                <a class="dropdown-item" href="/generatereport"
+                  >Generate Report</a
+                >
+              </li>
+              @*
+              <li>
+                <a class="dropdown-item" href="/viewreport">View Report</a>
+              </li>
+              *@
+            </ul>
+          </li>
+        </ul>
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <form
+              id="logoutForm"
+              action="/logout"
+              method="post"
+              class="form-inline"
+            >
+              <button
+                type="submit"
+                class="btn btn-link nav-link"
+                style="cursor: pointer"
+              >
+                Logout
+              </button>
+            </form>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/login">Login</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
