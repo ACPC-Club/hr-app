@@ -117,4 +117,112 @@ const addMember = async (req, res) => {
   }
 };
 
-module.exports = { getMembers, addMember };
+const getMemberById = async (req, res) => {
+  try {
+    const member = await memberModel.findById(req.params.id);
+    if (!member) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+    res.json(member);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const editMember = async (req, res) => {
+  const {
+    userId,
+    userName,
+    userPhone,
+    userUniversityId,
+    userDepartment,
+    userYear,
+    isBoardMember,
+    userPoints,
+    userWarnings,
+  } = req.body;
+  console.log("Request Body:", req.body);
+  let errors = {};
+  if (!userName || userName.trim() === "") {
+    errors.userName = "Name is required.";
+  }
+  const phonePattern = /^[0-9]{10,15}$/;
+  if (!userPhone || !phonePattern.test(userPhone.trim())) {
+    errors.userPhone = "Phone number must be 10-15 digits.";
+  }
+  const universityIdPattern = /^[0-9]{4}\/[0-9]{5}$/;
+  if (!userUniversityId || !universityIdPattern.test(userUniversityId.trim())) {
+    errors.userUniversityId = "University ID must be in the format YYYY/XXXXX.";
+  }
+  if (!userDepartment || userDepartment.trim() === "") {
+    errors.userDepartment = "Department is required.";
+  }
+  if (!userYear || userYear.trim() === "") {
+    errors.userYear = "Year is required.";
+  }
+  if (Object.keys(errors).length > 0) {
+    console.log("Validation Errors:", errors);
+    return res.status(400).json({ success: false, errors });
+  }
+  try {
+    const member = await memberModel.findById(userId);
+    member.name = userName.trim();
+    member.phoneNumber = userPhone.trim();
+    member.universityId = userUniversityId.trim();
+    member.department = userDepartment.trim();
+    member.year = userYear.trim();
+    member.isBoardMember = isBoardMember || false;
+    member.points = userPoints;
+    member.warnings = Array.isArray(userWarnings)
+      ? userWarnings
+      : [userWarnings]; // Handle case where there is only one warning
+    await member.save();
+    console.log("Member Updated:", member);
+    res.status(200).json({ success: true });
+  } catch (error) {
+    console.error("Error Updating Member:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+const viewMember = async (req, res) => {
+  try {
+    const member = await memberModel.findById(req.params.id);
+    if (!member) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+    res.render("memberDetail", { member });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const deleteMember = async (req, res) => {
+  try {
+    const member = await memberModel.findByIdAndDelete(req.params.id);
+    if (!member) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+    res.json({ success: true, message: "User deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+module.exports = {
+  getMembers,
+  addMember,
+  getMemberById,
+  editMember,
+  viewMember,
+  deleteMember,
+};

@@ -46,13 +46,16 @@ document.addEventListener("DOMContentLoaded", () => {
                     href="#"
                     class="btn btn-outline-primary btn-sm edit-user-btn"
                     data-bs-toggle="modal"
-                    data-bs-target="#editUser"
+                    data-bs-target="#editMember"
                     data-user-id="${member._id}"
                     >Edit</a
                   >
                   <a
-                    href="/admin/users/view/${member._id}"
-                    class="btn btn-outline-info btn-sm"
+                    href="#"
+                    class="btn btn-outline-info btn-sm view-user-btn"
+                    data-bs-toggle="modal"
+                    data-bs-target="#viewMember"
+                    data-user-id="${member._id}"
                     >View</a
                   >
                   <a
@@ -125,4 +128,49 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   fetchMembers(1);
+
+  // Handle the click event for view buttons
+  memberTableBody.addEventListener("click", async (event) => {
+    if (event.target.classList.contains("view-user-btn")) {
+      event.preventDefault();
+      const userId = event.target.getAttribute("data-user-id");
+      try {
+        const response = await fetch(`/admin/api/members/${userId}`);
+        const user = await response.json();
+        if (user) {
+          // Populate the modal fields
+          document.getElementById("view-member-name").textContent = user.name;
+          document.getElementById("view-member-phone").textContent =
+            user.phoneNumber;
+          document.getElementById("view-member-universityId").textContent =
+            user.universityId;
+          document.getElementById("view-member-department").textContent =
+            user.department;
+          document.getElementById("view-member-year").textContent = user.year;
+          document.getElementById("view-member-points").textContent =
+            user.points;
+          document.getElementById("view-member-warnings").textContent =
+            user.warnings.join(", ");
+          document.getElementById("view-member-boardMember").textContent =
+            user.isBoardMember ? "Yes" : "No";
+
+          // Generate and display the QR code
+          const qrContainer = document.getElementById("view-member-qr");
+          qrContainer.innerHTML = ""; // Clear previous QR code
+          new QRCode(qrContainer, {
+            text: user._id,
+            width: 128,
+            height: 128,
+          });
+
+          // Set the href for the "View on Separate Page" button
+          document.getElementById(
+            "view-on-page-btn"
+          ).href = `/admin/members/view/${user._id}`;
+        }
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+      }
+    }
+  });
 });

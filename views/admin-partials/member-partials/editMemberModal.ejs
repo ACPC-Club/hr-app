@@ -1,15 +1,15 @@
 <!-- Edit User Modal -->
 <div
   class="modal fade"
-  id="editUser"
+  id="editMember"
   tabindex="-1"
-  aria-labelledby="editUserLabel"
+  aria-labelledby="editMemberLabel"
   aria-hidden="true"
 >
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="editUserLabel">Edit User</h1>
+        <h1 class="modal-title fs-5" id="editMemberLabel">Edit User</h1>
         <button
           type="button"
           class="btn-close"
@@ -18,12 +18,7 @@
         ></button>
       </div>
       <div class="modal-body">
-        <form
-          id="edit-user-form"
-          action="/admin/editUser"
-          method="post"
-          class="user-form"
-        >
+        <form id="edit-user-form" class="user-form needs-validation" novalidate>
           <!-- User ID (hidden) -->
           <input type="hidden" id="edit-user-id" name="userId" value="" />
 
@@ -36,8 +31,9 @@
               id="edit-user-name"
               placeholder="Enter name"
               name="userName"
+              required
             />
-            <div id="edit-name-error" class="invalid-feedback"></div>
+            <div id="edit-userName-error" class="invalid-feedback"></div>
           </div>
 
           <!-- Phone Number -->
@@ -49,8 +45,11 @@
               id="edit-user-phone"
               placeholder="Enter phone number"
               name="userPhone"
+              required
             />
-            <div id="edit-phone-error" class="invalid-feedback"></div>
+            <div id="edit-userPhone-error" class="invalid-feedback">
+              Please enter a valid phone number (10 digits).
+            </div>
           </div>
 
           <!-- University ID -->
@@ -64,8 +63,11 @@
               id="edit-user-universityId"
               placeholder="Enter university ID"
               name="userUniversityId"
+              required
             />
-            <div id="edit-universityId-error" class="invalid-feedback"></div>
+            <div id="edit-userUniversityId-error" class="invalid-feedback">
+              Please enter a valid university ID (e.g., 2021/00977).
+            </div>
           </div>
 
           <!-- Department -->
@@ -77,7 +79,9 @@
               class="form-control"
               id="edit-user-department"
               name="userDepartment"
+              required
             >
+              <option value="">Select Department</option>
               <option value="Information Technology">
                 Information Technology
               </option>
@@ -87,19 +91,25 @@
               <option value="Coordination">Coordination</option>
               <option value="Technical Coaching">Technical Coaching</option>
             </select>
-            <div id="edit-department-error" class="invalid-feedback"></div>
+            <div id="edit-userDepartment-error" class="invalid-feedback"></div>
           </div>
 
           <!-- Year -->
           <div class="mb-3">
             <label for="edit-user-year" class="form-label">Year</label>
-            <select class="form-control" id="edit-user-year" name="userYear">
+            <select
+              class="form-control"
+              id="edit-user-year"
+              name="userYear"
+              required
+            >
+              <option value="">Select Year</option>
               <option value="24/25">24/25</option>
               <option value="25/26">25/26</option>
               <option value="26/27">26/27</option>
               <option value="27/28">27/28</option>
             </select>
-            <div id="edit-year-error" class="invalid-feedback"></div>
+            <div id="edit-userYear-error" class="invalid-feedback"></div>
           </div>
 
           <!-- Board Member -->
@@ -110,9 +120,36 @@
               id="edit-user-boardMember"
               name="isBoardMember"
             />
-            <label class="form-check-label" for="edit-user-boardMember">
-              Board Member
-            </label>
+            <label class="form-check-label" for="edit-user-boardMember"
+              >Board Member</label
+            >
+          </div>
+
+          <!-- Points -->
+          <div class="mb-3">
+            <label for="edit-user-points" class="form-label">Points</label>
+            <input
+              type="number"
+              class="form-control"
+              id="edit-user-points"
+              placeholder="Enter points"
+              name="userPoints"
+              required
+            />
+            <div id="edit-userPoints-error" class="invalid-feedback"></div>
+          </div>
+
+          <!-- Warnings -->
+          <div class="mb-3">
+            <label class="form-label">Warnings</label>
+            <div id="edit-user-warnings"></div>
+            <button
+              type="button"
+              class="btn btn-secondary btn-sm"
+              id="add-warning"
+            >
+              Add Warning
+            </button>
           </div>
 
           <div class="modal-footer">
@@ -123,7 +160,9 @@
             >
               Close
             </button>
-            <button type="submit" class="btn btn-primary">Save changes</button>
+            <button type="button" class="btn btn-primary" id="save-changes">
+              Save changes
+            </button>
           </div>
         </form>
       </div>
@@ -131,4 +170,4 @@
   </div>
 </div>
 
-<script src="/js/editUser.js"></script>
+<script src="/js/editMember.js"></script>

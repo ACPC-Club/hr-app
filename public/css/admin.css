@@ -13,10 +13,6 @@ main .container .row h1 {
   color: #fff !important;
 }
 
-.sidebar {
-  height: 100vh;
-}
-
 .subtable {
   float: right;
   padding-top: 1rem;
