@@ -31,7 +31,9 @@ document.addEventListener("DOMContentLoaded", () => {
         data.forEach((member) => {
           const row = `<tr>
               <td>${member.name}</td>
-              <td>${member.phoneNumber}</td>
+              <td><a href="tel:${member.phoneNumber}">${
+            member.phoneNumber
+          }</a></td>
               <td>${member.universityId}</td>
               <td>${member.department}</td>
               <td>${member.year}</td>
