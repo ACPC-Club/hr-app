@@ -1,0 +1,131 @@
+<!-- Add Member Modal -->
+<div
+  class="modal fade"
+  id="addMemberModal"
+  tabindex="-1"
+  aria-labelledby="addMemberModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="addMemberModalLabel">Add Member</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form
+          id="add-member-form"
+          action="/admin/addMember"
+          method="post"
+          class="user-form"
+        >
+          <!-- Name -->
+          <div class="mb-3">
+            <label for="add-user-name" class="form-label">Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="add-user-name"
+              placeholder="Enter name"
+              name="userName"
+            />
+            <div id="add-name-error" class="invalid-feedback"></div>
+          </div>
+
+          <!-- Phone Number -->
+          <div class="mb-3">
+            <label for="add-user-phone" class="form-label">Phone Number</label>
+            <input
+              type="text"
+              class="form-control"
+              id="add-user-phone"
+              placeholder="Enter phone number"
+              name="userPhone"
+            />
+            <div id="add-phone-error" class="invalid-feedback"></div>
+          </div>
+
+          <!-- University ID -->
+          <div class="mb-3">
+            <label for="add-user-universityId" class="form-label"
+              >University ID</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="add-user-universityId"
+              placeholder="Enter university ID"
+              name="userUniversityId"
+            />
+            <div id="add-universityId-error" class="invalid-feedback"></div>
+          </div>
+
+          <!-- Department -->
+          <div class="mb-3">
+            <label for="add-user-department" class="form-label"
+              >Department</label
+            >
+            <select
+              class="form-control"
+              id="add-user-department"
+              name="userDepartment"
+            >
+              <option value="Information Technology">
+                Information Technology
+              </option>
+              <option value="Human Resources">Human Resources</option>
+              <option value="Public Relations">Public Relations</option>
+              <option value="Media">Media</option>
+              <option value="Coordination">Coordination</option>
+              <option value="Technical Coaching">Technical Coaching</option>
+            </select>
+            <div id="add-department-error" class="invalid-feedback"></div>
+          </div>
+
+          <!-- Year -->
+          <div class="mb-3">
+            <label for="add-user-year" class="form-label">Year</label>
+            <select class="form-control" id="add-user-year" name="userYear">
+              <option value="24/25">24/25</option>
+              <option value="25/26">25/26</option>
+              <option value="26/27">26/27</option>
+              <option value="27/28">27/28</option>
+            </select>
+            <div id="add-year-error" class="invalid-feedback"></div>
+          </div>
+
+          <!-- Board Member -->
+          <div class="form-check mb-3">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="add-user-boardMember"
+              name="isBoardMember"
+            />
+            <label class="form-check-label" for="add-user-boardMember">
+              Board Member
+            </label>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="submit" class="btn btn-primary">Add Member</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/js/addMember.js"></script>

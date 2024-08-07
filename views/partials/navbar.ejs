@@ -4,6 +4,7 @@
   >
     <div class="container-fluid">
       <a class="navbar-brand" href="/">ACPC HR System</a>
+
       <button
         class="navbar-toggler"
         type="button"
@@ -15,41 +16,13 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
+      <% if (user) { %>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link" href="/">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/privacy">Privacy</a>
-          </li>
-
           <li class="nav-item dropdown">
             <a
               class="nav-link dropdown-toggle"
-              href="#"
-              id="expenseDropdown"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              Expense
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="expenseDropdown">
-              <li><a class="dropdown-item" href="/add">Add Expense</a></li>
-              <li>
-                <a class="dropdown-item" href="/manage">Manage Categories</a>
-              </li>
-              <li>
-                <a class="dropdown-item" href="/expenses">View Expenses</a>
-              </li>
-            </ul>
-          </li>
-
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              href="/"
+              href="/admin"
               id="dashboardDropdown"
               role="button"
               data-bs-toggle="dropdown"
@@ -58,21 +31,21 @@
               Dashboard
             </a>
             <ul class="dropdown-menu" aria-labelledby="dashboardDropdown">
-              <li><a class="dropdown-item" href="/profile">Profile</a></li>
+              <li><a class="dropdown-item" href="/admin/users">Users</a></li>
               <li>
-                <a class="dropdown-item" href="/generatereport"
-                  >Generate Report</a
-                >
+                <a class="dropdown-item" href="/admin/events">Events</a>
               </li>
-              @*
-              <li>
-                <a class="dropdown-item" href="/viewreport">View Report</a>
-              </li>
-              *@
             </ul>
           </li>
         </ul>
+        <% } %>
         <ul class="navbar-nav ms-auto">
+          <% if(!user){%>
+          <li class="nav-item">
+            <a class="nav-link" href="/">Login</a>
+          </li>
+          <% } else {%>
+
           <li class="nav-item">
             <form
               id="logoutForm"
@@ -89,10 +62,7 @@
               </button>
             </form>
           </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="/login">Login</a>
-          </li>
+          <% } %>
         </ul>
       </div>
     </div>

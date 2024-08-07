@@ -1,0 +1,56 @@
+<!-- Sort Modal -->
+<div
+  class="modal fade"
+  id="sortModal"
+  tabindex="-1"
+  aria-labelledby="sortModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="sortModalLabel">Sort Members</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form id="sort-form">
+          <div class="mb-3">
+            <label for="sort-by" class="form-label">Sort By</label>
+            <select class="form-control" id="sort-by">
+              <option value="name">Name</option>
+              <option value="phoneNumber">Phone Number</option>
+              <option value="universityId">University ID</option>
+              <option value="department">Department</option>
+              <option value="year">Year</option>
+              <option value="points">Points</option>
+              <option value="warnings">Warnings</option>
+              <option value="isBoardMember">Board Member</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="sort-order" class="form-label">Order</label>
+            <select class="form-control" id="sort-order">
+              <option value="asc">Ascending</option>
+              <option value="desc">Descending</option>
+            </select>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="submit" class="btn btn-primary">Sort</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

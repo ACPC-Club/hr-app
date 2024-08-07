@@ -1,0 +1,60 @@
+<!-- Filter Modal -->
+<div
+  class="modal fade"
+  id="filterModal"
+  tabindex="-1"
+  aria-labelledby="filterModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="filterModalLabel">Filter Members</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form id="filter-form">
+          <div class="mb-3">
+            <label for="filter-department" class="form-label">Department</label>
+            <select class="form-control" id="filter-department">
+              <option value="">All</option>
+              <option value="Information Technology">
+                Information Technology
+              </option>
+              <option value="Human Resources">Human Resources</option>
+              <option value="Public Relations">Public Relations</option>
+              <option value="Media">Media</option>
+              <option value="Coordination">Coordination</option>
+              <option value="Technical Coaching">Technical Coaching</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="filter-year" class="form-label">Year</label>
+            <select class="form-control" id="filter-year">
+              <option value="">All</option>
+              <option value="24/25">24/25</option>
+              <option value="25/26">25/26</option>
+              <option value="26/27">26/27</option>
+              <option value="27/28">27/28</option>
+            </select>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="submit" class="btn btn-primary">Apply Filter</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

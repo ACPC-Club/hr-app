@@ -1,49 +1,91 @@
-<%- include('partials/header') %>
-
-<body class="d-flex flex-column min-vh-100">
-  <%- include('partials/navbar') %>
-  <div class="container flex-grow-1">
-    <main role="main" class="pb-3">
-      <div class="container mt-5">
-        <div class="row justify-content-center">
-          <div class="col-md-6">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="text-center">Sign In</h3>
-              </div>
-              <div class="card-body">
-                <form id="loginForm" action="/login" method="post">
-                  <div class="form-group mb-3">
-                    <label for="username">Username</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="username"
-                      name="username"
-                    />
-                    <div id="usernameError" class="text-danger"></div>
-                  </div>
-                  <div class="form-group mb-3">
-                    <label for="password">Password</label>
-                    <input
-                      type="password"
-                      class="form-control"
-                      id="password"
-                      name="password"
-                    />
-                    <div id="passwordError" class="text-danger"></div>
-                  </div>
-                  <button type="submit" class="btn btn-primary btn-block">
-                    Sign In
-                  </button>
-                </form>
-              </div>
+<% if(!user) { %>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="text-center">Sign In</h3>
+        </div>
+        <div class="card-body">
+          <form id="loginForm" action="/login" method="post">
+            <div class="form-group mb-3">
+              <label for="username">Username</label>
+              <input
+                type="text"
+                class="form-control"
+                id="username"
+                name="username"
+              />
+              <div id="usernameError" class="text-danger"></div>
             </div>
-          </div>
+            <div class="form-group mb-3">
+              <label for="password">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                name="password"
+              />
+              <div id="passwordError" class="text-danger"></div>
+            </div>
+            <div id="loginError" class="text-danger">
+              <% if (typeof errors !== 'undefined' && errors.length > 0) { %> <%
+              errors.forEach(error => { %>
+              <p><%= error.message %></p>
+              <% }); %> <% } %>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">
+              Sign In
+            </button>
+          </form>
         </div>
       </div>
-    </main>
+    </div>
   </div>
-  <%- include('partials/footer') %>
-</body>
+</div>
+<% } %> <% if(user) { %>
+<style>
+  .card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: none;
+  }
+  .card-header {
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+  }
+  .card-body {
+    text-align: center;
+  }
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+  }
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+</style>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h3>Sign In</h3>
+        </div>
+        <div class="card-body">
+          <p>Welcome back! You are already logged in.</p>
+          <p>To access your dashboard, click the button below.</p>
+          <p>
+            If you believe this is an error, please contact support for
+            assistance.
+          </p>
+          <a href="/admin" class="btn btn-primary mt-3">Go to Dashboard</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% } %>
+
 <script src="/js/validateLogin.js"></script>

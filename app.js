@@ -3,11 +3,11 @@ const bodyParser = require("body-parser");
 const session = require("express-session");
 const path = require("path");
 const favicon = require("serve-favicon");
-
+const methodOverride = require("method-override");
+const expressLayouts = require("express-ejs-layouts");
 require("dotenv").config();
 const { connectToMongoDB } = require("./config/mongo.js");
 const { setupRoutes } = require("./routes/routes.js");
-
 const app = express();
 // Serve static files
 app.use(express.static("public", { maxAge: "7d" }));
@@ -22,6 +22,12 @@ app.use(bodyParser.json());
 // Set view engine
 app.set("view engine", "ejs");
 
+// Method override middleware
+app.use(methodOverride("_method"));
+
+// Express layouts middleware
+app.use(expressLayouts);
+
 // Connect to MongoDB
 connectToMongoDB();
 
@@ -33,6 +39,12 @@ app.use(
     saveUninitialized: true,
   })
 );
+
+// userModel.create({
+//   username: "admin",
+//   password: bcrypt.hashSync("supersecret123", 10),
+//   role: "admin",
+// });
 
 // Setup routes
 setupRoutes(app);
