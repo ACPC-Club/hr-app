@@ -8,12 +8,6 @@ main .container .row h1 {
   padding-bottom: 1rem;
 }
 
-@media (min-width: 768px) {
-  main .container {
-    padding-top: 4rem;
-  }
-}
-
 .active {
   background-color: #d2c1ff !important;
   color: #fff !important;

@@ -30,7 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
         memberTableBody.innerHTML = "";
         data.forEach((member) => {
           const row = `<tr>
-              <td>${member._id}</td>
               <td>${member.name}</td>
               <td>${member.phoneNumber}</td>
               <td>${member.universityId}</td>
