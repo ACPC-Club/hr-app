@@ -1,0 +1,95 @@
+<%- include("./admin-partials/header.ejs", { title: "Events" }) %>
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Events</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+      .btn-group .btn {
+        margin-right: 5px; /* Adjust as needed */
+      }
+
+      .btn-group .btn:last-child {
+        margin-right: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <div class="row mb-4">
+        <div class="col">
+          <h1>Events</h1>
+        </div>
+        <div class="col text-right">
+          <button
+            class="btn btn-success"
+            data-bs-toggle="modal"
+            data-bs-target="#addEventModal"
+          >
+            Add Event
+          </button>
+          <button
+            class="btn btn-secondary"
+            data-bs-toggle="modal"
+            data-bs-target="#filterModal"
+          >
+            Filter
+          </button>
+          <button
+            class="btn btn-info"
+            data-bs-toggle="modal"
+            data-bs-target="#sortModal"
+          >
+            Sort
+          </button>
+        </div>
+      </div>
+      <div class="row mb-4">
+        <div class="col">
+          <input
+            type="text"
+            id="search-bar"
+            class="form-control"
+            placeholder="Search by event name..."
+          />
+        </div>
+      </div>
+      <div class="table-responsive" style="max-height: 75vh; max-width: 75vw">
+        <table class="table table-bordered">
+          <thead class="sticky-top bg-light">
+            <tr>
+              <th>Event Image</th>
+              <th>Event Name</th>
+              <th>Event Duration</th>
+              <th>Event Time</th>
+              <th>Event Date</th>
+              <th>Description</th>
+              <th>Location</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="event-table-body"></tbody>
+        </table>
+      </div>
+      <nav>
+        <ul class="pagination" id="pagination-controls"></ul>
+      </nav>
+    </div>
+
+    <%- include("./admin-partials/event-partials/editEventModal.ejs") %>
+    <%- include("./admin-partials/event-partials/deleteEventModal.ejs") %>
+    <%- include("./admin-partials/event-partials/addEventModal.ejs") %>
+    <%- include("./admin-partials/event-partials/filterModal.ejs") %>
+    <%- include("./admin-partials/event-partials/sortModal.ejs") %>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="/js/eventManagement.js"></script>
+    <%- include("./admin-partials/footer.ejs") %>
+  </body>
+</html>
