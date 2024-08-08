@@ -10,29 +10,28 @@
     />
     <style>
       .admin-title {
-        font-size: 2rem; /* Adjust this value as needed */
-        font-weight: bold; /* Optional: make the text bold */
+        font-size: 2rem;
+        font-weight: bold;
       }
       body {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
       }
       .content {
-        margin-left: 270px; /* Increased margin to add space */
+        margin-left: 270px;
         padding: 1rem;
-        width: calc(100% - 270px); /* Adjusted width accordingly */
+        width: calc(100% - 250px);
+        transition: margin-left 0.3s ease, width 0.3s ease;
       }
       .btn-group .btn {
-        margin-right: 5px; /* Adjust as needed */
+        margin-right: 5px;
       }
       .btn-group .btn:last-child {
         margin-right: 0;
-      }
-      body {
-        display: flex;
-        height: 100vh;
-        margin: 0;
       }
       .sidebar {
         width: 250px;
@@ -43,6 +42,8 @@
         background-color: #f8f9fa;
         border-right: 1px solid #dee2e6;
         padding: 1rem;
+        transition: transform 0.3s ease;
+        z-index: 1000;
       }
       .sidebar .nav-link {
         color: #333;
@@ -68,10 +69,39 @@
       .sidebar .dropdown-menu {
         width: 100%;
       }
+      .toggle-btn {
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
+        z-index: 1100;
+        display: none;
+      }
+      @media (max-width: 768px) {
+        .sidebar {
+          transform: translateX(-100%);
+        }
+        .sidebar.active {
+          transform: translateX(0);
+        }
+        .content {
+          margin-left: 0;
+          width: 100%;
+        }
+        .content.active {
+          margin-left: 250px;
+          width: calc(100% - 250px);
+        }
+        .toggle-btn {
+          display: block;
+        }
+      }
     </style>
   </head>
   <body>
-    <div class="sidebar d-flex flex-column p-3 bg-light">
+    <button class="btn btn-primary toggle-btn" id="toggleSidebar">
+      Toggle Sidebar
+    </button>
+    <div class="sidebar d-flex flex-column p-3 bg-light" id="sidebar">
       <a
         href="/admin"
         class="d-flex align-items-center mb-3 text-decoration-none"
@@ -141,7 +171,15 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js"></script>
+    <script>
+      document
+        .getElementById("toggleSidebar")
+        .addEventListener("click", function () {
+          document.getElementById("sidebar").classList.toggle("active");
+          document.getElementById("content").classList.toggle("active");
+        });
+    </script>
   </body>
 </html>
 
-<%-include("./icons.ejs")%>
+<%- include("./icons.ejs") %>

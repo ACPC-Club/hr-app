@@ -1,4 +1,3 @@
-<%- include("./admin-partials/header.ejs", { title: "Members" }) %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,8 +11,10 @@
     />
   </head>
   <body>
-    <div class="content">
-      <div class="container mt-5">
+    <%- include("./admin-partials/header.ejs", { title: "Members" }) %>
+
+    <div id="content" class="content container mt-5" >
+      
         <div class="row mb-4">
           <div class="col">
             <h1>Users</h1>
@@ -52,8 +53,8 @@
             />
           </div>
         </div>
-        <div class="table-responsive" style="max-height: 75vh; max-width: 75vw">
-          <table class="table table-bordered">
+        <div class="table-responsive" style="max-height: 75vh">
+          <table class="table table-bordered table-striped table-hover">
             <thead class="sticky-top bg-light">
               <tr>
                 <th>Name</th>
@@ -71,7 +72,10 @@
           </table>
         </div>
         <nav>
-          <ul class="pagination" id="pagination-controls"></ul>
+          <ul
+            class="pagination justify-content-center"
+            id="pagination-controls"
+          ></ul>
         </nav>
       </div>
     </div>
