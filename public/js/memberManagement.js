@@ -1,10 +1,25 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // Handle the Export to Excel functionality
+  document.getElementById("export-btn").addEventListener("click", () => {
+    console.log("Exporting to Excel");
+    const table = document.querySelector("table");
+    if (!table) {
+      console.error("Table element not found");
+      return;
+    }
+    const wb = XLSX.utils.table_to_book(table, { sheet: "Users" });
+    XLSX.writeFile(wb, "users.xlsx");
+    console.log("Exported to Excel");
+  });
+
+  // Elements
   const searchBar = document.getElementById("search-bar");
   const memberTableBody = document.getElementById("member-table-body");
   const filterForm = document.getElementById("filter-form");
   const sortForm = document.getElementById("sort-form");
   const paginationControls = document.getElementById("pagination-controls");
 
+  // Variables
   let currentPage = 1;
   let totalPages = 1;
   let searchQuery = "";
@@ -13,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let sortBy = "name";
   let sortOrder = "asc";
 
+  // Fetch members from the server
   const fetchMembers = (page = 1) => {
     $.ajax({
       url: "/admin/api/members",
@@ -82,6 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
+  // Render pagination controls
   const renderPagination = () => {
     paginationControls.innerHTML = "";
 
@@ -106,12 +123,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  searchBar.addEventListener("input", function () {
+  // Search bar functionality
+  searchBar.addEventListener("input", () => {
     searchQuery = searchBar.value.toLowerCase();
     fetchMembers(1);
   });
 
-  filterForm.addEventListener("submit", function (event) {
+  // Filter form submission
+  filterForm.addEventListener("submit", (event) => {
     event.preventDefault();
     filterDepartment = document.getElementById("filter-department").value;
     filterYear = document.getElementById("filter-year").value;
@@ -119,7 +138,8 @@ document.addEventListener("DOMContentLoaded", () => {
     $("#filterModal").modal("hide");
   });
 
-  sortForm.addEventListener("submit", function (event) {
+  // Sort form submission
+  sortForm.addEventListener("submit", (event) => {
     event.preventDefault();
     sortBy = document.getElementById("sort-by").value;
     sortOrder = document.getElementById("sort-order").value;
@@ -127,6 +147,7 @@ document.addEventListener("DOMContentLoaded", () => {
     $("#sortModal").modal("hide");
   });
 
+  // Initial fetch of members
   fetchMembers(1);
 
   // Handle the click event for view buttons

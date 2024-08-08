@@ -153,20 +153,9 @@
         </li>
       </ul>
       <hr />
-      <div class="dropdown">
-        <a
-          href="#"
-          class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle"
-          id="dropdownUser1"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
-          <svg class="bi pe-none me-2" width="16" height="16">
-            <use xlink:href="#logout"></use>
-          </svg>
-          <strong>Logout</strong>
-        </a>
-      </div>
+      <form action="/logout" method="POST" class="mt-auto">
+        <button type="submit" class="btn btn-danger btn-block">Logout</button>
+      </form>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>

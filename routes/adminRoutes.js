@@ -5,16 +5,16 @@ const dashboardController = require("../controllers/dashboardController");
 // View member details page
 app.get("/members/view/:id", memberController.viewMember);
 
-// Middleware to check if user is logged in
-app.use((req, res, next) => {
-  if (req.session.user !== undefined) {
-    next();
-  } else {
-    res.render("404", {
-      currentPage: "404",
-    });
-  }
-});
+// // Middleware to check if user is logged in
+// app.use((req, res, next) => {
+//   if (req.session.user !== undefined) {
+//     next();
+//   } else {
+//     res.render("404", {
+//       currentPage: "404",
+//     });
+//   }
+// });
 
 app.get("/", (req, res) => {
   res.render("dashboard", { layout: false });
