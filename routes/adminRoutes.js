@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const memberController = require("../controllers/memberController");
-
+const dashboardController = require("../controllers/dashboardController");
 // View member details page
 app.get("/members/view/:id", memberController.viewMember);
 
@@ -17,10 +17,13 @@ app.use((req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-  res.render("dashboard", { title: "Dashboard" });
+  res.render("dashboard", { layout: false });
 });
+
+app.get("/api/dashboard", dashboardController.getStatistics);
+
 app.get("/members", (req, res) => {
-  res.render("members"); // Assumes you have a 'members.ejs' file in your 'views' directory
+  res.render("members", { layout: false }); // Assumes you have a 'members.ejs' file in your 'views' directory
 });
 
 // Route to fetch member data
