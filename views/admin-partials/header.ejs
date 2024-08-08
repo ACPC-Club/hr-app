@@ -170,15 +170,13 @@
       </ul>
 
       <hr />
-      <form action="/logout" method="POST" class="mt-auto">
+      <form action="/logout" method="POST">
         <button type="submit" class="btn btn-danger btn-block">Logout</button>
       </form>
       <% } %> <% if (!user) { %>
       </ul>
-      <hr />
-      
-      <!-- add a login button here that redirects to / and make it green -->
 
+      <hr />
       <a href="/" class="btn btn-success btn-block">Login</a>
 
       <% } %>
