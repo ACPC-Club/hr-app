@@ -54,21 +54,6 @@
         color: white;
         border-radius: 5px;
       }
-      .sidebar .dropdown {
-        margin-top: auto;
-      }
-      .sidebar .dropdown-toggle {
-        width: 100%;
-        text-align: left;
-        padding: 0.5rem 1rem;
-        color: #333;
-        background-color: #f8f9fa;
-        border: 1px solid #dee2e6;
-        border-radius: 5px;
-      }
-      .sidebar .dropdown-menu {
-        width: 100%;
-      }
       .toggle-btn {
         position: fixed;
         top: 1rem;
@@ -151,6 +136,17 @@
             Members
           </a>
         </li>
+        <li>
+          <a
+            href="/admin/blogs"
+            class="nav-link <%= title === 'Blogs' ? 'active' : '' %>"
+          >
+            <svg class="bi pe-none me-2" width="16" height="16">
+              <use xlink:href="#blog"></use>
+            </svg>
+            Blogs
+          </a>
+        </li>
       </ul>
       <hr />
       <form action="/logout" method="POST" class="mt-auto">
@@ -165,7 +161,7 @@
         .getElementById("toggleSidebar")
         .addEventListener("click", function () {
           document.getElementById("sidebar").classList.toggle("active");
-          document.getElementById("content").classList.toggle("active");
+          document.querySelector(".content").classList.toggle("active");
         });
     </script>
   </body>

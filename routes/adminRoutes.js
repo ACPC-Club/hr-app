@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const memberController = require("../controllers/memberController");
 const dashboardController = require("../controllers/dashboardController");
+const blogController = require("../controllers/blogController");
 // View member details page
 app.get("/members/view/:id", memberController.viewMember);
 
@@ -25,6 +26,8 @@ app.get("/api/dashboard", dashboardController.getStatistics);
 app.get("/members", (req, res) => {
   res.render("members", { layout: false }); // Assumes you have a 'members.ejs' file in your 'views' directory
 });
+
+app.get("/blogs", blogController.blogList); // Assumes you have a 'blogs.ejs' file in your 'views' directory
 
 // Route to fetch member data
 app.get("/api/members", memberController.getMembers);
