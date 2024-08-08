@@ -4,11 +4,14 @@ const session = require("express-session");
 const path = require("path");
 const favicon = require("serve-favicon");
 const methodOverride = require("method-override");
-const expressLayouts = require("express-ejs-layouts");
+
 require("dotenv").config();
+
 const { connectToMongoDB } = require("./config/mongo.js");
 const { setupRoutes } = require("./routes/routes.js");
+
 const app = express();
+
 // Serve static files
 app.use(express.static("public", { maxAge: "7d" }));
 
@@ -24,9 +27,6 @@ app.set("view engine", "ejs");
 
 // Method override middleware
 app.use(methodOverride("_method"));
-
-// Express layouts middleware
-app.use(expressLayouts);
 
 // Connect to MongoDB
 connectToMongoDB();

@@ -1,6 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    
+    <title>ACPC HR System</title>
+  
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/site.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/bs-brain@2.0.4/components/error-404s/error-404-1/assets/css/error-404-1.css"
+    />
+ 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ACPC Admin Sidebar</title>
@@ -88,7 +107,7 @@
     </button>
     <div class="sidebar d-flex flex-column p-3 bg-light" id="sidebar">
       <a
-        href="/admin"
+        href="/"
         class="d-flex align-items-center mb-3 text-decoration-none"
       >
         <span class="fs-4 admin-title">ACPC Admin</span>
@@ -103,6 +122,7 @@
             Home
           </a>
         </li>
+        <% if (user) { %>
         <li>
           <a
             href="/admin"
@@ -148,10 +168,20 @@
           </a>
         </li>
       </ul>
+
       <hr />
       <form action="/logout" method="POST" class="mt-auto">
         <button type="submit" class="btn btn-danger btn-block">Logout</button>
       </form>
+      <% } %> <% if (!user) { %>
+      </ul>
+      <hr />
+      
+      <!-- add a login button here that redirects to / and make it green -->
+
+      <a href="/" class="btn btn-success btn-block">Login</a>
+
+      <% } %>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
