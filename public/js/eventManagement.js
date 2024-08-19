@@ -1,29 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Handle the Export to Excel functionality
-  document.getElementById("export-btn").addEventListener("click", () => {
-    const table = document.querySelector("table");
-    if (!table) {
-      console.error("Table element not found");
-      return;
-    }
-    const wb = XLSX.utils.table_to_book(table, { sheet: "Events" });
-    XLSX.writeFile(wb, "events.xlsx");
-  });
-
-  // Elements
-  const searchBar = document.getElementById("search-bar");
-  const eventTableBody = document.getElementById("event-table-body");
-  const paginationControls = document.getElementById("pagination-controls");
-
-  // Variables
-  let currentPage = 1;
-  let totalPages = 1;
-  let searchQuery = "";
-  let sortBy = "date";
-  let sortOrder = "asc";
-
-  // Fetch events from the server
   const fetchEvents = (page = 1) => {
+    console.log(`Fetching events for page ${page} with searchQuery: "${searchQuery}", sortBy: "${sortBy}", sortOrder: "${sortOrder}"`);
+    
     $.ajax({
       url: "/api/events",
       method: "GET",
@@ -34,15 +12,25 @@ document.addEventListener("DOMContentLoaded", () => {
         sortOrder,
       },
       success: (response) => {
+        console.log("API response:", response);
+        
         const { data, totalPages: total, currentPage: current } = response;
+        if (!data || !Array.isArray(data)) {
+          console.error("Data is not an array or is missing:", data);
+          return;
+        }
+
         eventTableBody.innerHTML = "";
+
         data.forEach((event) => {
+          console.log("Processing event:", event);
+          
           const row = `<tr>
               <td><img src="${event.image}" alt="${event.name}" style="width: 100px; height: auto;" /></td>
               <td>${event.name}</td>
               <td>${event.duration}</td>
               <td>${event.time}</td>
-              <td>${event.date.toLocaleString()}</td>
+              <td>${new Date(event.date).toLocaleDateString()}</td>
               <td>${event.description}</td>
               <td>${event.location}</td>
               <td>
@@ -62,39 +50,10 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       error: (error) => {
         console.error("Error fetching events:", error);
+        alert("An error occurred while fetching events. Check the console for details.");
       },
     });
   };
 
-  // Render pagination controls
-  const renderPagination = () => {
-    paginationControls.innerHTML = "";
-
-    for (let i = 1; i <= totalPages; i++) {
-      const pageItem = `<li class="page-item ${i === currentPage ? "active" : ""}">
-          <a class="page-link" href="#" data-page="${i}">${i}</a>
-        </li>`;
-      paginationControls.insertAdjacentHTML("beforeend", pageItem);
-    }
-
-    const pageLinks = paginationControls.getElementsByClassName("page-link");
-    for (let link of pageLinks) {
-      link.addEventListener("click", (event) => {
-        event.preventDefault();
-        const page = parseInt(event.target.getAttribute("data-page"));
-        if (page !== currentPage) {
-          fetchEvents(page);
-        }
-      });
-    }
-  };
-
-  // Search bar functionality
-  searchBar.addEventListener("input", () => {
-    searchQuery = searchBar.value.toLowerCase();
-    fetchEvents(1);
-  });
-
-  // Initial fetch of events
   fetchEvents(1);
 });

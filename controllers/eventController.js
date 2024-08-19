@@ -29,6 +29,8 @@ const getEvents = async (req, res) => {
       .limit(parseInt(limit));
     const total = await Event.countDocuments(query);
 
+    console.log("Fetched events:", events); // Debugging
+
     res.status(200).json({
       success: true,
       data: events,
@@ -36,9 +38,11 @@ const getEvents = async (req, res) => {
       currentPage: page,
     });
   } catch (error) {
+    console.error("Error fetching events:", error); // Debugging
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
 
 const addEvent = async (req, res) => {
   const {
