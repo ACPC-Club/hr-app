@@ -11,22 +11,16 @@ const getEvents = async (req, res) => {
     sortOrder = "asc",
   } = req.query;
 
-  console.log("Request Query:", req.query);
-
   const query = {};
   if (search) {
     query.name = { $regex: search, $options: "i" }; // case-insensitive search
   }
   if (filterDate) {
-    query.date = { $gte: new Date(filterDate) }; // Example filter for date
+    query.date = { $gte: new Date(filterDate) };
   }
-
-  console.log("Query Object:", query);
 
   const sortOptions = {};
   sortOptions[sortBy] = sortOrder === "asc" ? 1 : -1;
-
-  console.log("Sort Options:", sortOptions);
 
   try {
     const events = await Event.find(query)
@@ -35,9 +29,6 @@ const getEvents = async (req, res) => {
       .limit(parseInt(limit));
     const total = await Event.countDocuments(query);
 
-    console.log("Events Fetched:", events);
-    console.log("Total Events:", total);
-
     res.status(200).json({
       success: true,
       data: events,
@@ -45,11 +36,9 @@ const getEvents = async (req, res) => {
       currentPage: page,
     });
   } catch (error) {
-    console.error("Error Fetching Events:", error);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
-
 
 const addEvent = async (req, res) => {
   const {
@@ -58,38 +47,38 @@ const addEvent = async (req, res) => {
     eventDuration,
     eventTime,
     eventLocation,
-    eventDescription, // Added description
+    eventDescription,
   } = req.body;
 
-  const imageFile = req.file; // Assuming you use multer middleware
-
-  console.log("Request Body:", req.body);
-  console.log("Image File:", req.file);
+  const imageFile = req.file;
 
   let errors = {};
 
-  // Server-side validation
   if (!eventName || eventName.trim() === "") {
     errors.eventName = "Event name is required.";
   }
 
   if (!eventDate) {
     errors.eventDate = "Event date is required.";
+  } else if (new Date(eventDate) < new Date()) {
+    errors.eventDate = "Event date cannot be in the past.";
+  }
+
+  if (!eventTime) {
+    errors.eventTime = "Event time is required.";
+  } else if (new Date(`${eventDate}T${eventTime}`) < new Date()) {
+    errors.eventTime = "Event time cannot be in the past.";
   }
 
   if (!eventDuration || eventDuration.trim() === "") {
     errors.eventDuration = "Event duration is required.";
   }
 
-  if (!eventTime || eventTime.trim() === "") {
-    errors.eventTime = "Event time is required.";
-  }
-
   if (!eventLocation || eventLocation.trim() === "") {
     errors.eventLocation = "Event location is required.";
   }
 
-  if (!eventDescription || eventDescription.trim() === "") { // Added description validation
+  if (!eventDescription || eventDescription.trim() === "") {
     errors.eventDescription = "Event description is required.";
   }
 
@@ -98,26 +87,23 @@ const addEvent = async (req, res) => {
   }
 
   if (Object.keys(errors).length > 0) {
-    console.log("Validation Errors:", errors);
     return res.status(400).json({ success: false, errors });
   }
 
   try {
     const newEvent = new Event({
       name: eventName.trim(),
-      date: new Date(eventDate),
-      image: imageFile.path, // Store the path of the uploaded image
+      date: new Date(`${eventDate}T${eventTime}`),
+      image: imageFile.path,
       duration: eventDuration.trim(),
       time: eventTime.trim(),
       location: eventLocation.trim(),
-      description: eventDescription.trim(), // Added description
+      description: eventDescription.trim(),
     });
 
     await newEvent.save();
-    console.log("New Event Saved:", newEvent);
     res.status(200).json({ success: true });
   } catch (error) {
-    console.error("Error Saving Event:", error);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
@@ -130,20 +116,12 @@ const editEvent = async (req, res) => {
     eventDuration,
     eventTime,
     eventLocation,
-    eventDescription, // Added description
+    eventDescription,
   } = req.body;
 
   const imageFile = req.file;
 
-  console.log("Request Body:", req.body);
-  console.log("Image File:", req.file);
-
   let errors = {};
-
-  // Server-side validation
-  if (!id) {
-    errors.eventId = "Event ID is required.";
-  }
 
   if (!eventName || eventName.trim() === "") {
     errors.eventName = "Event name is required.";
@@ -151,75 +129,71 @@ const editEvent = async (req, res) => {
 
   if (!eventDate) {
     errors.eventDate = "Event date is required.";
+  } else if (new Date(eventDate) < new Date()) {
+    errors.eventDate = "Event date cannot be in the past.";
+  }
+
+  if (!eventTime) {
+    errors.eventTime = "Event time is required.";
+  } else if (new Date(`${eventDate}T${eventTime}`) < new Date()) {
+    errors.eventTime = "Event time cannot be in the past.";
   }
 
   if (!eventDuration || eventDuration.trim() === "") {
     errors.eventDuration = "Event duration is required.";
   }
 
-  if (!eventTime || eventTime.trim() === "") {
-    errors.eventTime = "Event time is required.";
-  }
-
   if (!eventLocation || eventLocation.trim() === "") {
     errors.eventLocation = "Event location is required.";
   }
 
-  if (!eventDescription || eventDescription.trim() === "") { // Added description validation
+  if (!eventDescription || eventDescription.trim() === "") {
     errors.eventDescription = "Event description is required.";
   }
 
   if (Object.keys(errors).length > 0) {
-    console.log("Validation Errors:", errors);
     return res.status(400).json({ success: false, errors });
   }
 
   try {
-    const updateFields = {
-      name: eventName.trim(),
-      date: new Date(eventDate),
-      duration: eventDuration.trim(),
-      time: eventTime.trim(),
-      location: eventLocation.trim(),
-      description: eventDescription.trim(), // Added description
-    };
-
-    if (imageFile) {
-      updateFields.image = imageFile.path;
-    }
-
-    const updatedEvent = await Event.findByIdAndUpdate(id, updateFields, { new: true });
-
-    if (!updatedEvent) {
+    const event = await Event.findById(id);
+    if (!event) {
       return res.status(404).json({ success: false, message: "Event not found" });
     }
 
-    console.log("Event Updated:", updatedEvent);
-    res.status(200).json({ success: true, data: updatedEvent });
+    event.name = eventName.trim();
+    event.date = new Date(`${eventDate}T${eventTime}`);
+    event.duration = eventDuration.trim();
+    event.time = eventTime.trim();
+    event.location = eventLocation.trim();
+    event.description = eventDescription.trim();
+
+    if (imageFile) {
+      event.image = imageFile.path;
+    }
+
+    await event.save();
+    res.status(200).json({ success: true });
   } catch (error) {
-    console.error("Error Updating Event:", error);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
 const deleteEvent = async (req, res) => {
-  const { id } = req.params;
-
-  console.log("Deleting Event ID:", id);
-
   try {
-    const deletedEvent = await Event.findByIdAndDelete(id);
-
-    if (!deletedEvent) {
+    const event = await Event.findByIdAndDelete(req.params.id);
+    if (!event) {
       return res.status(404).json({ success: false, message: "Event not found" });
     }
-
-    console.log("Event Deleted:", deletedEvent);
-    res.status(200).json({ success: true, message: "Event deleted successfully" });
+    res.status(200).json({ success: true });
   } catch (error) {
-    console.error("Error Deleting Event:", error);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
-module.exports = { getEvents, addEvent, editEvent, deleteEvent };
+module.exports = {
+  getEvents,
+  addEvent,
+  editEvent,
+  deleteEvent,
+};

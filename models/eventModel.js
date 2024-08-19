@@ -37,7 +37,7 @@ const eventSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  description: {
+  description: { // Added description field
     type: String,
     required: true,
   },

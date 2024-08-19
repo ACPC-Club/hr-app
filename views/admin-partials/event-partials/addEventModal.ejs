@@ -1,60 +1,127 @@
 <!-- Add Event Modal -->
-<div class="modal fade" id="addEventModal" tabindex="-1" aria-labelledby="addEventModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="addEventModal"
+  tabindex="-1"
+  aria-labelledby="addEventModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="addEventModalLabel">Add Event</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
-        <form id="add-event-form" action="/admin/addEvent" method="POST" class="user-form" enctype="multipart/form-data">
-          <!-- Event Name -->
+        <form
+          id="add-event-form"
+          action="/admin/addEvent"
+          method="post"
+          class="event-form"
+          enctype="multipart/form-data"
+        >
+          <!-- Title -->
           <div class="mb-3">
-            <label for="event-name" class="form-label">Event Name</label>
-            <input type="text" class="form-control" id="event-name" placeholder="Enter event name" name="eventName" />
-            <div id="event-name-error" class="invalid-feedback"></div>
+            <label for="add-event-title" class="form-label">Title</label>
+            <input
+              type="text"
+              class="form-control"
+              id="add-event-title"
+              placeholder="Enter title"
+              name="eventName"
+            />
+            <div id="add-title-error" class="invalid-feedback"></div>
           </div>
 
-          <!-- Event Date -->
+          <!-- Date -->
           <div class="mb-3">
-            <label for="event-date" class="form-label">Event Date</label>
-            <input type="date" class="form-control" id="event-date" name="eventDate" />
-            <div id="event-date-error" class="invalid-feedback"></div>
+            <label for="add-event-date" class="form-label">Date</label>
+            <input
+              type="date"
+              class="form-control"
+              id="add-event-date"
+              name="eventDate"
+            />
+            <div id="add-date-error" class="invalid-feedback"></div>
           </div>
 
-          <!-- Event Duration -->
+          <!-- Time -->
           <div class="mb-3">
-            <label for="event-duration" class="form-label">Event Duration</label>
-            <input type="text" class="form-control" id="event-duration" placeholder="Enter event duration" name="eventDuration" />
-            <div id="event-duration-error" class="invalid-feedback"></div>
+            <label for="add-event-time" class="form-label">Time</label>
+            <input
+              type="time"
+              class="form-control"
+              id="add-event-time"
+              name="eventTime"
+            />
+            <div id="add-time-error" class="invalid-feedback"></div>
           </div>
 
-          <!-- Event Time -->
+          <!-- Duration -->
           <div class="mb-3">
-            <label for="event-time" class="form-label">Event Time</label>
-            <input type="time" class="form-control" id="event-time" name="eventTime" />
-            <div id="event-time-error" class="invalid-feedback"></div>
+            <label for="add-event-duration" class="form-label">Duration</label>
+            <input
+              type="text"
+              class="form-control"
+              id="add-event-duration"
+              placeholder="Enter duration (e.g., 2 hours)"
+              name="eventDuration"
+            />
+            <div id="add-duration-error" class="invalid-feedback"></div>
           </div>
 
-          <!-- Event Location -->
+          <!-- Location -->
           <div class="mb-3">
-            <label for="event-location" class="form-label">Event Location</label>
-            <input type="text" class="form-control" id="event-location" placeholder="Enter event location" name="eventLocation" />
-            <div id="event-location-error" class="invalid-feedback"></div>
+            <label for="add-event-location" class="form-label">Location</label>
+            <input
+              type="text"
+              class="form-control"
+              id="add-event-location"
+              placeholder="Enter location"
+              name="eventLocation"
+            />
+            <div id="add-location-error" class="invalid-feedback"></div>
           </div>
 
-          <!-- Event Image -->
+          <!-- Description -->
           <div class="mb-3">
-            <label for="event-image" class="form-label">Event Image</label>
-            <div class="file-input-container">
-              <input type="file" class="form-control" id="event-image" name="imageFile" accept="image/*" />
-              <div class="file-input-placeholder">Drag and drop an image or click to select</div>
-            </div>
-            <div id="event-image-error" class="invalid-feedback"></div>
+            <label for="add-event-description" class="form-label"
+              >Description</label
+            >
+            <textarea
+              class="form-control"
+              id="add-event-description"
+              placeholder="Enter description"
+              name="eventDescription"
+            ></textarea>
+            <div id="add-description-error" class="invalid-feedback"></div>
+          </div>
+
+          <!-- Image -->
+          <div class="mb-3">
+            <label for="add-event-image" class="form-label">Image</label>
+            <input
+              type="file"
+              class="form-control"
+              id="add-event-image"
+              name="imageFile"
+            />
+            <div id="add-image-error" class="invalid-feedback"></div>
           </div>
 
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
             <button type="submit" class="btn btn-primary">Add Event</button>
           </div>
         </form>
