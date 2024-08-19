@@ -1,28 +1,28 @@
 const express = require("express");
-const router = express.Router();
+const app = express();
 const memberController = require("../controllers/memberController");
 const dashboardController = require("../controllers/dashboardController");
 const blogController = require("../controllers/blogController");
 const eventController = require("../controllers/eventController");
-const multer = require("multer");
-const path = require("path");
+const multer = require('multer');
+const path = require('path');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "public/images");
+    cb(null, 'public/images'); // Specify the directory to save the file
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname));
+    cb(null, Date.now() + path.extname(file.originalname)); // Rename the file
   },
 });
 
 const upload = multer({ storage: storage });
 
 // View member details page
-router.get("/members/view/:id", memberController.viewMember);
+app.get("/members/view/:id", memberController.viewMember);
 
 // Middleware to check if user is logged in
-router.use((req, res, next) => {
+app.use((req, res, next) => {
   if (req.session.user !== undefined) {
     next();
   } else {
@@ -32,47 +32,47 @@ router.use((req, res, next) => {
   }
 });
 
-router.get("/", (req, res) => {
+app.get("/", (req, res) => {
   res.render("dashboard", { layout: false });
 });
 
-router.get("/api/dashboard", dashboardController.getStatistics);
+app.get("/api/dashboard", dashboardController.getStatistics);
 
-router.get("/members", (req, res) => {
-  res.render("members", { layout: false });
+app.get("/members", (req, res) => {
+  res.render("members", { layout: false }); // Assumes you have a 'members.ejs' file in your 'views' directory
 });
 
-router.get("/blogs", blogController.blogList);
+app.get("/blogs", blogController.blogList); // Assumes you have a 'blogs.ejs' file in your 'views' directory
 
-router.get("/events", (req, res) => {
-  res.render("events");
+app.get("/events", (req, res) => {
+  res.render("events"); // Assumes you have a 'events.ejs' file in your 'views' directory
 });
 
 // Route to fetch member data
-router.get("/api/members", memberController.getMembers);
+app.get("/api/members", memberController.getMembers);
 
 // Route to fetch a single member by ID
-router.get("/api/members/:id", memberController.getMemberById);
+app.get("/api/members/:id", memberController.getMemberById);
 
 // Route to add a new member
-router.post("/addMember", memberController.addMember);
+app.post("/addMember", memberController.addMember);
 
 // Route to edit a member
-router.post("/editMember", memberController.editMember);
+app.post("/editMember", memberController.editMember);
 
 // Route to delete a member
-router.delete("/deleteMember/:id", memberController.deleteMember);
+app.delete("/deleteMember/:id", memberController.deleteMember);
 
 // Route to fetch event data
-router.get("/api/events", eventController.getEvents);
+app.get("/api/events", eventController.getEvents);
 
 // Route to add a new event
-router.post("/addEvent", upload.single("imageFile"), eventController.addEvent);
+app.post("/addEvent", upload.single('imageFile'), eventController.addEvent);
 
 // Route to edit an event
-router.post("/editEvent", upload.single("imageFile"), eventController.editEvent);
+app.post("/editEvent", upload.single('imageFile'), eventController.editEvent); // Changed from app.put to app.post
 
 // Route to delete an event
-router.delete("/deleteEvent/:id", eventController.deleteEvent);
+app.delete("/deleteEvent/:id", eventController.deleteEvent); // Added delete route
 
-module.exports = router;
+module.exports = app;

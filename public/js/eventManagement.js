@@ -1,149 +1,100 @@
-$(document).ready(function () {
-  function fetchEvents(params = {}) {
-    $.ajax({
-      url: "/admin/api/events",
-      data: params,
-      success: function (response) {
-        if (response.success) {
-          renderEvents(response.data);
-          renderPagination(response.currentPage, response.totalPages);
-        } else {
-          alert("Failed to fetch events.");
-        }
-      },
-      error: function () {
-        alert("Error occurred while fetching events.");
-      },
-    });
-  }
-
-  function renderEvents(events) {
-    let eventList = $("#eventList");
-    eventList.empty();
-    events.forEach((event) => {
-      eventList.append(`
-        <tr>
-          <td><img src="/${event.image}" alt="${event.name}" style="width: 100px; height: auto;"></td>
-          <td>${event.name}</td>
-          <td>${event.description}</td>
-          <td>${new Date(event.date).toLocaleString()}</td>
-          <td>
-            <button class="btn btn-primary edit-btn" data-id="${event._id}">Edit</button>
-            <button class="btn btn-danger delete-btn" data-id="${event._id}">Delete</button>
-          </td>
-        </tr>
-      `);
-    });
-    attachEventHandlers();
-  }
-
-  function renderPagination(currentPage, totalPages) {
-    let pagination = $("#pagination");
-    pagination.empty();
-    for (let i = 1; i <= totalPages; i++) {
-      pagination.append(`
-        <button class="btn btn-secondary page-btn" data-page="${i}">${i}</button>
-      `);
+document.addEventListener("DOMContentLoaded", () => {
+  // Handle the Export to Excel functionality
+  document.getElementById("export-btn").addEventListener("click", () => {
+    const table = document.querySelector("table");
+    if (!table) {
+      console.error("Table element not found");
+      return;
     }
-    attachPaginationHandlers();
-  }
-
-  function attachEventHandlers() {
-    $(".edit-btn").click(function () {
-      let id = $(this).data("id");
-      $.ajax({
-        url: `/admin/api/events/${id}`,
-        success: function (response) {
-          if (response.success) {
-            let event = response.data;
-            $("#eventId").val(event._id);
-            $("#eventName").val(event.name);
-            $("#eventDate").val(event.date.split("T")[0]);
-            $("#eventTime").val(event.date.split("T")[1].slice(0, 5));
-            $("#eventDuration").val(event.duration);
-            $("#eventLocation").val(event.location);
-            $("#eventDescription").val(event.description);
-            $("#eventModalLabel").text("Edit Event");
-            $("#eventModal").modal("show");
-          } else {
-            alert("Failed to fetch event details.");
-          }
-        },
-        error: function () {
-          alert("Error occurred while fetching event details.");
-        },
-      });
-    });
-
-    $(".delete-btn").click(function () {
-      let id = $(this).data("id");
-      if (confirm("Are you sure you want to delete this event?")) {
-        $.ajax({
-          url: `/admin/deleteEvent/${id}`,
-          method: "DELETE",
-          success: function (response) {
-            if (response.success) {
-              fetchEvents();
-            } else {
-              alert("Failed to delete event.");
-            }
-          },
-          error: function () {
-            alert("Error occurred while deleting event.");
-          },
-        });
-      }
-    });
-  }
-
-  function attachPaginationHandlers() {
-    $(".page-btn").click(function () {
-      let page = $(this).data("page");
-      fetchEvents({ page });
-    });
-  }
-
-  $("#searchForm").submit(function (e) {
-    e.preventDefault();
-    let search = $("#search").val();
-    let filterDate = $("#filterDate").val();
-    fetchEvents({ search, filterDate });
+    const wb = XLSX.utils.table_to_book(table, { sheet: "Events" });
+    XLSX.writeFile(wb, "events.xlsx");
   });
 
-  $("#addEventBtn").click(function () {
-    $("#eventForm")[0].reset();
-    $("#eventId").val("");
-    $(".error-message").text("");
-    $("#eventModalLabel").text("Add Event");
-    $("#eventModal").modal("show");
-  });
+  // Elements
+  const searchBar = document.getElementById("search-bar");
+  const eventTableBody = document.getElementById("event-table-body");
+  const paginationControls = document.getElementById("pagination-controls");
 
-  $("#eventForm").submit(function (e) {
-    e.preventDefault();
-    let formData = new FormData(this);
-    let id = $("#eventId").val();
-    let url = id ? `/admin/editEvent/${id}` : "/admin/addEvent";
+  // Variables
+  let currentPage = 1;
+  let totalPages = 1;
+  let searchQuery = "";
+  let sortBy = "date";
+  let sortOrder = "asc";
+
+  // Fetch events from the server
+  const fetchEvents = (page = 1) => {
     $.ajax({
-      url,
-      method: id ? "PUT" : "POST",
-      data: formData,
-      contentType: false,
-      processData: false,
-      success: function (response) {
-        if (response.success) {
-          $("#eventModal").modal("hide");
-          fetchEvents();
-        } else {
-          for (let key in response.errors) {
-            $(`#${key}Error`).text(response.errors[key]);
-          }
-        }
+      url: "/api/events",
+      method: "GET",
+      data: {
+        page,
+        search: searchQuery,
+        sortBy,
+        sortOrder,
       },
-      error: function () {
-        alert("Error occurred while saving event.");
+      success: (response) => {
+        const { data, totalPages: total, currentPage: current } = response;
+        eventTableBody.innerHTML = "";
+        data.forEach((event) => {
+          const row = `<tr>
+              <td><img src="${event.image}" alt="${event.name}" style="width: 100px; height: auto;" /></td>
+              <td>${event.name}</td>
+              <td>${event.duration}</td>
+              <td>${event.time}</td>
+              <td>${event.date.toLocaleString()}</td>
+              <td>${event.description}</td>
+              <td>${event.location}</td>
+              <td>
+                <div class="btn-group" role="group">
+                  <a href="#" class="btn btn-outline-primary btn-sm edit-event-btn" data-bs-toggle="modal" data-bs-target="#editEvent" data-event-id="${event._id}">Edit</a>
+                  <a href="#" class="btn btn-outline-info btn-sm view-event-btn" data-bs-toggle="modal" data-bs-target="#viewEvent" data-event-id="${event._id}">View</a>
+                  <a href="#" class="btn btn-outline-danger btn-sm delete-event-btn" data-bs-toggle="modal" data-bs-target="#deleteEvent" data-event-id="${event._id}">Delete</a>
+                </div>
+              </td>
+            </tr>`;
+          eventTableBody.insertAdjacentHTML("beforeend", row);
+        });
+
+        currentPage = current;
+        totalPages = total;
+        renderPagination();
+      },
+      error: (error) => {
+        console.error("Error fetching events:", error);
       },
     });
+  };
+
+  // Render pagination controls
+  const renderPagination = () => {
+    paginationControls.innerHTML = "";
+
+    for (let i = 1; i <= totalPages; i++) {
+      const pageItem = `<li class="page-item ${i === currentPage ? "active" : ""}">
+          <a class="page-link" href="#" data-page="${i}">${i}</a>
+        </li>`;
+      paginationControls.insertAdjacentHTML("beforeend", pageItem);
+    }
+
+    const pageLinks = paginationControls.getElementsByClassName("page-link");
+    for (let link of pageLinks) {
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        const page = parseInt(event.target.getAttribute("data-page"));
+        if (page !== currentPage) {
+          fetchEvents(page);
+        }
+      });
+    }
+  };
+
+  // Search bar functionality
+  searchBar.addEventListener("input", () => {
+    searchQuery = searchBar.value.toLowerCase();
+    fetchEvents(1);
   });
 
-  fetchEvents();
+  // Initial fetch of events
+  fetchEvents(1);
 });
