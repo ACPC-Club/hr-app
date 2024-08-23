@@ -8,14 +8,17 @@
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
     />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
   </head>
   <body>
     <%- include("./admin-partials/header.ejs", { title: "Blogs" }) %>
-    <div class="content container mt-5">
-      <h1>Manage Blogs</h1>
-      <hr />
+
+    <div id="content" class="content container mt-5">
       <div class="row mb-4">
         <div class="col">
+          <h1>Manage Blogs</h1>
+        </div>
+        <div class="col text-right">
           <button
             class="btn btn-success"
             data-bs-toggle="modal"
@@ -23,9 +26,38 @@
           >
             Add New Blog
           </button>
+          <button
+            class="btn btn-secondary"
+            data-bs-toggle="modal"
+            data-bs-target="#filterModal"
+          >
+            Filter
+          </button>
+          <button
+            class="btn btn-info"
+            data-bs-toggle="modal"
+            data-bs-target="#sortModal"
+          >
+            Sort
+          </button>
+          <button class="btn btn-primary" id="export-btn">
+            Export to Excel
+          </button>
         </div>
       </div>
-      <div class="table-responsive">
+
+      <div class="row mb-4">
+        <div class="col">
+          <input
+            type="text"
+            id="search-bar"
+            class="form-control"
+            placeholder="Search by title or author..."
+          />
+        </div>
+      </div>
+
+      <div class="table-responsive" style="max-height: 75vh">
         <table class="table table-bordered table-striped table-hover">
           <thead class="sticky-top bg-light">
             <tr>
@@ -36,131 +68,59 @@
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="blog-table-body">
             <% blogs.forEach(function(blog) { %>
             <tr>
               <td><%= blog.title %></td>
               <td><%= blog.author %></td>
               <td><%= blog.brief %></td>
-              <td><%= blog.date.toDateString() %></td>
+              <td><%= new Date(blog.date).toDateString() %></td>
               <td>
-                <button
-                  class="btn btn-primary btn-sm"
-                  data-bs-toggle="modal"
-                  data-bs-target="#editBlogModal<%= blog._id %>"
-                >
-                  Edit
-                </button>
-                <form
-                  action="/admin/blogs/delete/<%= blog._id %>"
-                  method="POST"
-                  class="d-inline"
-                >
-                  <button type="submit" class="btn btn-danger btn-sm">
-                    Delete
-                  </button>
-                </form>
+                <div class="btn-group" role="group">
+                  <a
+                    href="#"
+                    class="btn btn-outline-primary btn-sm edit-blog-btn"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editBlogModal<%= blog._id %>"
+                    data-blog-id="<%= blog._id %>"
+                    >Edit</a
+                  >
+                  <form
+                    action="/admin/blogs/delete/<%= blog._id %>"
+                    method="POST"
+                    class="d-inline"
+                  >
+                    <button
+                      type="submit"
+                      class="btn btn-outline-danger btn-sm delete-blog-btn"
+                    >
+                      Delete
+                    </button>
+                  </form>
+                </div>
               </td>
             </tr>
             <% }); %>
           </tbody>
         </table>
       </div>
+
+      <nav>
+        <ul
+          class="pagination justify-content-center"
+          id="pagination-controls"
+        ></ul>
+      </nav>
     </div>
 
-    <!-- Add Blog Modal -->
-    <div
-      class="modal fade"
-      id="addBlogModal"
-      tabindex="-1"
-      aria-labelledby="addBlogModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <form
-            action="/admin/blogs/add"
-            method="POST"
-            enctype="multipart/form-data"
-          >
-            <div class="modal-header">
-              <h5 class="modal-title" id="addBlogModalLabel">Add New Blog</h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body">
-              <div class="mb-3">
-                <label for="title" class="form-label">Title</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="title"
-                  name="title"
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label for="author" class="form-label">Author</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="author"
-                  name="author"
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label for="brief" class="form-label">Brief</label>
-                <textarea
-                  class="form-control"
-                  id="brief"
-                  name="brief"
-                  rows="2"
-                  required
-                ></textarea>
-              </div>
-              <div class="mb-3">
-                <label for="content" class="form-label">Content</label>
-                <textarea
-                  class="form-control"
-                  id="content"
-                  name="content"
-                  rows="5"
-                  required
-                ></textarea>
-              </div>
-              <div class="mb-3">
-                <label for="image" class="form-label">Image</label>
-                <input
-                  type="file"
-                  class="form-control"
-                  id="image"
-                  name="image"
-                  required
-                />
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-              <button type="submit" class="btn btn-primary">Add Blog</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+    <!-- Modals -->
+    <%- include("./admin-partials/blog-partials/addBlogModal.ejs") %> <%-
+    include("./admin-partials/blog-partials/editBlogModal.ejs") %> <%-
+    include("./admin-partials/blog-partials/filterModal.ejs") %> <%-
+    include("./admin-partials/blog-partials/sortModal.ejs") %>
 
-    <!-- Include Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="/js/blogManagement.js"></script>
+    <%- include("./admin-partials/footer.ejs") %>
   </body>
 </html>

@@ -1,0 +1,54 @@
+<div
+  class="modal fade"
+  id="sortModal"
+  tabindex="-1"
+  aria-labelledby="sortModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form id="sort-form">
+        <div class="modal-header">
+          <h5 class="modal-title" id="sortModalLabel">Sort Blogs</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="sort-by" class="form-label">Sort By</label>
+            <select class="form-control" id="sort-by" name="sort-by" required>
+              <option value="date">Date</option>
+              <option value="title">Title</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="sort-order" class="form-label">Order</label>
+            <select
+              class="form-control"
+              id="sort-order"
+              name="sort-order"
+              required
+            >
+              <option value="asc">Ascending</option>
+              <option value="desc">Descending</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary">Apply Sort</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

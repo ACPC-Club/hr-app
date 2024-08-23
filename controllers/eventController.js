@@ -11,16 +11,21 @@ const getEvents = async (req, res) => {
     sortOrder = "asc",
   } = req.query;
 
+  console.log("Received GET request for events with query:", req.query);
+
   const query = {};
   if (search) {
     query.name = { $regex: search, $options: "i" }; // case-insensitive search
+    console.log("Search query applied:", query.name);
   }
   if (filterDate) {
     query.date = { $gte: new Date(filterDate) };
+    console.log("Date filter applied:", query.date);
   }
 
   const sortOptions = {};
   sortOptions[sortBy] = sortOrder === "asc" ? 1 : -1;
+  console.log("Sorting options:", sortOptions);
 
   try {
     const events = await Event.find(query)
@@ -29,7 +34,8 @@ const getEvents = async (req, res) => {
       .limit(parseInt(limit));
     const total = await Event.countDocuments(query);
 
-    console.log("Fetched events:", events); // Debugging
+    console.log("Fetched events:", events);
+    console.log("Total events matching query:", total);
 
     res.status(200).json({
       success: true,
@@ -38,13 +44,14 @@ const getEvents = async (req, res) => {
       currentPage: page,
     });
   } catch (error) {
-    console.error("Error fetching events:", error); // Debugging
+    console.error("Error fetching events:", error);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
-
 const addEvent = async (req, res) => {
+  console.log("Received POST request to add event with body:", req.body);
+
   const {
     eventName,
     eventDate,
@@ -55,6 +62,7 @@ const addEvent = async (req, res) => {
   } = req.body;
 
   const imageFile = req.file;
+  console.log("Uploaded file info:", imageFile);
 
   let errors = {};
 
@@ -91,6 +99,7 @@ const addEvent = async (req, res) => {
   }
 
   if (Object.keys(errors).length > 0) {
+    console.log("Validation errors found:", errors);
     return res.status(400).json({ success: false, errors });
   }
 
@@ -105,14 +114,19 @@ const addEvent = async (req, res) => {
       description: eventDescription.trim(),
     });
 
+    console.log("Saving new event:", newEvent);
+
     await newEvent.save();
     res.status(200).json({ success: true });
   } catch (error) {
+    console.error("Error adding event:", error);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
 const editEvent = async (req, res) => {
+  console.log("Received PUT request to edit event with body:", req.body);
+
   const {
     id,
     eventName,
@@ -124,6 +138,7 @@ const editEvent = async (req, res) => {
   } = req.body;
 
   const imageFile = req.file;
+  console.log("Uploaded file info:", imageFile);
 
   let errors = {};
 
@@ -156,13 +171,17 @@ const editEvent = async (req, res) => {
   }
 
   if (Object.keys(errors).length > 0) {
+    console.log("Validation errors found:", errors);
     return res.status(400).json({ success: false, errors });
   }
 
   try {
     const event = await Event.findById(id);
     if (!event) {
-      return res.status(404).json({ success: false, message: "Event not found" });
+      console.log("Event not found with ID:", id);
+      return res
+        .status(404)
+        .json({ success: false, message: "Event not found" });
     }
 
     event.name = eventName.trim();
@@ -176,21 +195,31 @@ const editEvent = async (req, res) => {
       event.image = imageFile.path;
     }
 
+    console.log("Saving edited event:", event);
+
     await event.save();
     res.status(200).json({ success: true });
   } catch (error) {
+    console.error("Error editing event:", error);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
 const deleteEvent = async (req, res) => {
+  console.log("Received DELETE request for event ID:", req.params.id);
+
   try {
     const event = await Event.findByIdAndDelete(req.params.id);
     if (!event) {
-      return res.status(404).json({ success: false, message: "Event not found" });
+      console.log("Event not found with ID:", req.params.id);
+      return res
+        .status(404)
+        .json({ success: false, message: "Event not found" });
     }
+    console.log("Deleted event:", event);
     res.status(200).json({ success: true });
   } catch (error) {
+    console.error("Error deleting event:", error);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };

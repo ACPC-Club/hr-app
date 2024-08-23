@@ -1,0 +1,92 @@
+<div
+  class="modal fade"
+  id="addBlogModal"
+  tabindex="-1"
+  aria-labelledby="addBlogModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form
+        action="/admin/blogs/add"
+        method="POST"
+        enctype="multipart/form-data"
+        id="add-blog-form"
+      >
+        <div class="modal-header">
+          <h5 class="modal-title" id="addBlogModalLabel">Add New Blog</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input
+              type="text"
+              class="form-control"
+              id="blog-title"
+              name="title"
+            />
+            <div id="title-error" class="invalid-feedback"></div>
+          </div>
+          <div class="mb-3">
+            <label for="author" class="form-label">Author</label>
+            <input
+              type="text"
+              class="form-control"
+              id="blog-author"
+              name="author"
+            />
+            <div id="author-error" class="invalid-feedback"></div>
+          </div>
+          <div class="mb-3">
+            <label for="brief" class="form-label">Brief</label>
+            <textarea
+              class="form-control"
+              id="blog-brief"
+              name="brief"
+              rows="2"
+            ></textarea>
+            <div id="brief-error" class="invalid-feedback"></div>
+          </div>
+          <div class="mb-3">
+            <label for="content" class="form-label">Content</label>
+            <textarea
+              class="form-control"
+              id="blog-content"
+              name="content"
+              rows="5"
+            ></textarea>
+            <div id="content-error" class="invalid-feedback"></div>
+          </div>
+          <div class="mb-3">
+            <label for="image" class="form-label">Image</label>
+            <input
+              type="file"
+              class="form-control"
+              id="blog-image"
+              name="image"
+            />
+            <div id="image-error" class="invalid-feedback"></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary">Add Blog</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="/js/addBlog.js"></script>

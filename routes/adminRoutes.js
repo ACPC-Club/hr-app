@@ -4,12 +4,12 @@ const memberController = require("../controllers/memberController");
 const dashboardController = require("../controllers/dashboardController");
 const blogController = require("../controllers/blogController");
 const eventController = require("../controllers/eventController");
-const multer = require('multer');
-const path = require('path');
+const multer = require("multer");
+const path = require("path");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'public/images'); // Specify the directory to save the file
+    cb(null, "public/images"); // Specify the directory to save the file
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname)); // Rename the file
@@ -22,15 +22,15 @@ const upload = multer({ storage: storage });
 app.get("/members/view/:id", memberController.viewMember);
 
 // Middleware to check if user is logged in
-app.use((req, res, next) => {
-  if (req.session.user !== undefined) {
-    next();
-  } else {
-    res.render("404", {
-      currentPage: "404",
-    });
-  }
-});
+// app.use((req, res, next) => {
+//   if (req.session.user !== undefined) {
+//     next();
+//   } else {
+//     res.render("404", {
+//       currentPage: "404",
+//     });
+//   }
+// });
 
 app.get("/", (req, res) => {
   res.render("dashboard", { layout: false });
@@ -43,6 +43,8 @@ app.get("/members", (req, res) => {
 });
 
 app.get("/blogs", blogController.blogList); // Assumes you have a 'blogs.ejs' file in your 'views' directory
+
+app.post("/blogs/add", blogController.addBlog); // Route to add a new blog
 
 app.get("/events", (req, res) => {
   res.render("events"); // Assumes you have a 'events.ejs' file in your 'views' directory
@@ -67,10 +69,14 @@ app.delete("/deleteMember/:id", memberController.deleteMember);
 app.get("/api/events", eventController.getEvents);
 
 // Route to add a new event
-app.post("/addEvent", upload.single('imageFile'), eventController.addEvent);
+app.post("/addEvent", upload.single("imageFile"), eventController.addEvent);
 
 // Route to edit an event
+<<<<<<< Updated upstream
 app.post("/editEvent", upload.single('imageFile'), eventController.editEvent); // Changed from app.put to app.post
+=======
+app.put("/editEvent", upload.single("imageFile"), eventController.editEvent); // Added edit route
+>>>>>>> Stashed changes
 
 // Route to delete an event
 app.delete("/deleteEvent/:id", eventController.deleteEvent); // Added delete route

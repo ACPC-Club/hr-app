@@ -11,6 +11,7 @@ const blogList = async (req, res) => {
 };
 const addBlog = async (req, res) => {
   try {
+    console.log(req.body);
     const newBlog = new blogModel(req.body);
     await newBlog.save();
     res.json({ success: true, message: "Blog added successfully" });

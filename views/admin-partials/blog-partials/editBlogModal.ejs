@@ -1,0 +1,107 @@
+<% blogs.forEach(function(blog) { %>
+<div
+  class="modal fade"
+  id="editBlogModal<%= blog._id %>"
+  tabindex="-1"
+  aria-labelledby="editBlogModalLabel<%= blog._id %>"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form
+        action="/admin/blogs/edit/<%= blog._id %>"
+        method="POST"
+        enctype="multipart/form-data"
+      >
+        <div class="modal-header">
+          <h5 class="modal-title" id="editBlogModalLabel<%= blog._id %>">
+            Edit Blog
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="title<%= blog._id %>" class="form-label">Title</label>
+            <input
+              type="text"
+              class="form-control"
+              id="title<%= blog._id %>"
+              name="title"
+              value="<%= blog.title %>"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="author<%= blog._id %>" class="form-label">Author</label>
+            <input
+              type="text"
+              class="form-control"
+              id="author<%= blog._id %>"
+              name="author"
+              value="<%= blog.author %>"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="brief<%= blog._id %>" class="form-label">Brief</label>
+            <textarea
+              class="form-control"
+              id="brief<%= blog._id %>"
+              name="brief"
+              rows="2"
+              required
+            >
+<%= blog.brief %></textarea
+            >
+          </div>
+          <div class="mb-3">
+            <label for="content<%= blog._id %>" class="form-label"
+              >Content</label
+            >
+            <textarea
+              class="form-control"
+              id="content<%= blog._id %>"
+              name="content"
+              rows="5"
+              required
+            >
+<%= blog.content %></textarea
+            >
+          </div>
+          <div class="mb-3">
+            <label for="image<%= blog._id %>" class="form-label">Image</label>
+            <input
+              type="file"
+              class="form-control"
+              id="image<%= blog._id %>"
+              name="image"
+            />
+            <img
+              src="<%= blog.imagePath %>"
+              alt="Current Image"
+              class="img-thumbnail mt-2"
+            />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<% }); %>
+
+<script src="/js/editBlog.js"></script>
