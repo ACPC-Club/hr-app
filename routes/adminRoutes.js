@@ -72,11 +72,7 @@ app.get("/api/events", eventController.getEvents);
 app.post("/addEvent", upload.single("imageFile"), eventController.addEvent);
 
 // Route to edit an event
-<<<<<<< Updated upstream
-app.post("/editEvent", upload.single('imageFile'), eventController.editEvent); // Changed from app.put to app.post
-=======
-app.put("/editEvent", upload.single("imageFile"), eventController.editEvent); // Added edit route
->>>>>>> Stashed changes
+app.post("/editEvent", upload.single("imageFile"), eventController.editEvent); // Changed from app.put to app.post
 
 // Route to delete an event
 app.delete("/deleteEvent/:id", eventController.deleteEvent); // Added delete route
