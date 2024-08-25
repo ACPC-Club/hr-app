@@ -6,6 +6,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let isValid = true;
 
+    // Disable the submit button to prevent multiple submissions
+    const submitButton = addEventForm.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+
     // Current date and time for comparison
     const now = new Date();
 
@@ -113,18 +117,30 @@ document.addEventListener("DOMContentLoaded", () => {
         method: "POST",
         body: formData,
       })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.success) {
-            location.reload(); // Reload the page to see the new event
-          } else {
-            alert("Failed to add event.");
-          }
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-          alert("An error occurred while adding the event.");
-        });
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok'); // Handle non-200 responses
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.success) {
+          fetchEvents(); // Fetch the updated events list
+          alert("Event added successfully!"); // Optionally, show a success message
+          addEventForm.reset(); // Optionally, reset the form fields
+        } else {
+          alert("Failed to add event: " + (data.message || "Unknown error"));
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("An error occurred while adding the event.");
+      })
+      .finally(() => {
+        submitButton.disabled = false; // Re-enable the button after processing
+      });
+    } else {
+      submitButton.disabled = false; // Re-enable if validation fails
     }
   });
 });
