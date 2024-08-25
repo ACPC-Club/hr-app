@@ -10,7 +10,7 @@
     />
     <style>
       .btn-group .btn {
-        margin-right: 5px; /* Adjust as needed */
+        margin-right: 5px;
       }
 
       .btn-group .btn:last-child {
@@ -20,7 +20,7 @@
   </head>
   <body>
     <%- include("./admin-partials/header.ejs", { title: "Events" }) %>
-    <div id="content" class="content container mt-5" >
+    <div id="content" class="content container mt-5">
       <div class="row mb-4">
         <div class="col">
           <h1>Events</h1>
@@ -73,7 +73,9 @@
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody id="event-table-body"></tbody>
+          <tbody id="event-table-body">
+            <!-- Event rows will be dynamically populated here -->
+          </tbody>
         </table>
       </div>
       <nav>
@@ -89,6 +91,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="/js/eventManagement.js"></script>
+    <script src="/js/deleteEvent.js"></script>
     <%- include("./admin-partials/footer.ejs") %>
   </body>
 </html>

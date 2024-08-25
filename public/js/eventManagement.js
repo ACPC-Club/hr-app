@@ -35,30 +35,24 @@ document.addEventListener("DOMContentLoaded", () => {
         data.forEach((event) => {
           console.log("Processing event:", event);
 
-          const row = `<tr>
-              <td><img src="${event.image}" alt="${
-            event.name
-          }" style="width: 100px; height: auto;" /></td>
-              <td>${event.name}</td>
-              <td>${event.duration}</td>
-              <td>${event.time}</td>
-              <td>${new Date(event.date).toLocaleDateString()}</td>
-              <td>${event.description}</td>
-              <td>${event.location}</td>
-              <td>
-                <div class="btn-group" role="group">
-                  <a href="#" class="btn btn-outline-primary btn-sm edit-event-btn" data-bs-toggle="modal" data-bs-target="#editEvent" data-event-id="${
-                    event._id
-                  }">Edit</a>
-                  <a href="#" class="btn btn-outline-info btn-sm view-event-btn" data-bs-toggle="modal" data-bs-target="#viewEvent" data-event-id="${
-                    event._id
-                  }">View</a>
-                  <a href="#" class="btn btn-outline-danger btn-sm delete-event-btn" data-bs-toggle="modal" data-bs-target="#deleteEvent" data-event-id="${
-                    event._id
-                  }">Delete</a>
-                </div>
-              </td>
-            </tr>`;
+          // Update the row HTML in eventManagement.js
+const row = `<tr>
+<td><img src="${event.image}" alt="${event.name}" style="width: 100px; height: auto;" /></td>
+<td>${event.name}</td>
+<td>${event.duration}</td>
+<td>${event.time}</td>
+<td>${new Date(event.date).toLocaleDateString()}</td>
+<td class="description-cell">${event.description}</td>
+<td>${event.location}</td>
+<td>
+  <div class="btn-group" role="group">
+    <a href="#" class="btn btn-outline-primary btn-sm edit-event-btn" data-bs-toggle="modal" data-bs-target="#editEvent" data-event-id="${event._id}">Edit</a>
+    <a href="#" class="btn btn-outline-info btn-sm view-event-btn" data-bs-toggle="modal" data-bs-target="#viewEvent" data-event-id="${event._id}">View</a>
+    <a href="#" class="btn btn-outline-danger btn-sm delete-event-btn" data-bs-toggle="modal" data-bs-target="#deleteEvent" data-event-id="${event._id}">Delete</a>
+  </div>
+</td>
+</tr>`;
+
           eventTableBody.insertAdjacentHTML("beforeend", row);
         });
 

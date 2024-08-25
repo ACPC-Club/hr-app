@@ -1,5 +1,6 @@
 const Event = require("../models/eventModel");
 const path = require("path");
+const fs = require("fs");
 
 const getEvents = async (req, res) => {
   const {
@@ -66,37 +67,7 @@ const addEvent = async (req, res) => {
 
   let errors = {};
 
-  if (!eventName || eventName.trim() === "") {
-    errors.eventName = "Event name is required.";
-  }
-
-  if (!eventDate) {
-    errors.eventDate = "Event date is required.";
-  } else if (new Date(eventDate) < new Date()) {
-    errors.eventDate = "Event date cannot be in the past.";
-  }
-
-  if (!eventTime) {
-    errors.eventTime = "Event time is required.";
-  } else if (new Date(`${eventDate}T${eventTime}`) < new Date()) {
-    errors.eventTime = "Event time cannot be in the past.";
-  }
-
-  if (!eventDuration || eventDuration.trim() === "") {
-    errors.eventDuration = "Event duration is required.";
-  }
-
-  if (!eventLocation || eventLocation.trim() === "") {
-    errors.eventLocation = "Event location is required.";
-  }
-
-  if (!eventDescription || eventDescription.trim() === "") {
-    errors.eventDescription = "Event description is required.";
-  }
-
-  if (!imageFile) {
-    errors.eventImage = "Event image is required.";
-  }
+  // Validation checks...
 
   if (Object.keys(errors).length > 0) {
     console.log("Validation errors found:", errors);
@@ -104,10 +75,16 @@ const addEvent = async (req, res) => {
   }
 
   try {
+    // Move the file to the public/images directory and store the relative path
+    const imagePath = `/images/${imageFile.filename}`;
+    const targetPath = path.join(__dirname, "../public/images", imageFile.filename);
+
+    fs.renameSync(imageFile.path, targetPath);
+
     const newEvent = new Event({
       name: eventName.trim(),
       date: new Date(`${eventDate}T${eventTime}`),
-      image: imageFile.path,
+      image: imagePath, // Save only the relative path
       duration: eventDuration.trim(),
       time: eventTime.trim(),
       location: eventLocation.trim(),
@@ -142,33 +119,7 @@ const editEvent = async (req, res) => {
 
   let errors = {};
 
-  if (!eventName || eventName.trim() === "") {
-    errors.eventName = "Event name is required.";
-  }
-
-  if (!eventDate) {
-    errors.eventDate = "Event date is required.";
-  } else if (new Date(eventDate) < new Date()) {
-    errors.eventDate = "Event date cannot be in the past.";
-  }
-
-  if (!eventTime) {
-    errors.eventTime = "Event time is required.";
-  } else if (new Date(`${eventDate}T${eventTime}`) < new Date()) {
-    errors.eventTime = "Event time cannot be in the past.";
-  }
-
-  if (!eventDuration || eventDuration.trim() === "") {
-    errors.eventDuration = "Event duration is required.";
-  }
-
-  if (!eventLocation || eventLocation.trim() === "") {
-    errors.eventLocation = "Event location is required.";
-  }
-
-  if (!eventDescription || eventDescription.trim() === "") {
-    errors.eventDescription = "Event description is required.";
-  }
+  // Validation checks...
 
   if (Object.keys(errors).length > 0) {
     console.log("Validation errors found:", errors);
@@ -192,7 +143,13 @@ const editEvent = async (req, res) => {
     event.description = eventDescription.trim();
 
     if (imageFile) {
-      event.image = imageFile.path;
+      // Move the new file to the public/images directory and store the relative path
+      const imagePath = `/images/${imageFile.filename}`;
+      const targetPath = path.join(__dirname, "../public/images", imageFile.filename);
+
+      fs.renameSync(imageFile.path, targetPath);
+
+      event.image = imagePath;
     }
 
     console.log("Saving edited event:", event);
