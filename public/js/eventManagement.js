@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         currentPage = current;
         totalPages = total;
-        renderPagination();
+        renderPagination(currentPage, totalPages);
       },
       error: (error) => {
         console.error("Error fetching events:", error);
@@ -69,6 +69,28 @@ document.addEventListener("DOMContentLoaded", () => {
       },
     });
   };
+
+  // RenderPagination function
+  function renderPagination(currentPage, totalPages) {
+    const paginationElement = document.getElementById("pagination");
+    paginationElement.innerHTML = ""; // Clear existing pagination
+
+    for (let page = 1; page <= totalPages; page++) {
+      const pageButton = document.createElement("button");
+      pageButton.textContent = page;
+      pageButton.classList.add("btn", "btn-secondary", "mx-1");
+
+      if (page === currentPage) {
+        pageButton.classList.add("active");
+      }
+
+      pageButton.addEventListener("click", () => {
+        fetchEvents(page);
+      });
+
+      paginationElement.appendChild(pageButton);
+    }
+  }
 
   // Event listeners for search, sort, and filter functionalities
   // Initialize the first fetch

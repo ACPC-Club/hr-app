@@ -1,0 +1,63 @@
+<div class="modal fade" id="editEvent" tabindex="-1" aria-labelledby="editEventLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editEventLabel">Edit Event</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="editEventForm" enctype="multipart/form-data"> <!-- Corrected form ID -->
+          <!-- User ID (hidden) -->
+          <input type="hidden" name="eventId" id="edit-event-id"> <!-- Corrected hidden input name -->
+
+          <!-- Name -->
+          <div class="mb-3">
+            <label for="eventName" class="form-label">Event Name</label>
+            <input type="text" class="form-control" id="eventName" name="eventName" required />
+            <div id="eventNameError" class="text-danger"></div>
+          </div>
+
+          <div class="mb-3">
+            <label for="eventDate" class="form-label">Event Date</label>
+            <input type="date" class="form-control" id="eventDate" name="eventDate" required />
+            <div id="eventDateError" class="text-danger"></div>
+          </div>
+
+          <div class="mb-3">
+            <label for="eventTime" class="form-label">Event Time</label>
+            <input type="time" class="form-control" id="eventTime" name="eventTime" required />
+            <div id="eventTimeError" class="text-danger"></div>
+          </div>
+
+          <div class="mb-3">
+            <label for="eventDuration" class="form-label">Duration</label>
+            <input type="text" class="form-control" id="eventDuration" name="eventDuration">
+            <div id="eventDurationError" class="text-danger"></div>
+          </div>
+
+          <div class="mb-3">
+            <label for="eventLocation" class="form-label">Location</label>
+            <input type="text" class="form-control" id="eventLocation" name="eventLocation">
+            <div id="eventLocationError" class="text-danger"></div>
+          </div>
+
+          <div class="mb-3">
+            <label for="eventDescription" class="form-label">Description</label>
+            <textarea class="form-control" id="eventDescription" name="eventDescription"></textarea>
+            <div id="eventDescriptionError" class="text-danger"></div>
+          </div>
+
+          <div class="mb-3">
+            <label for="imageFile" class="form-label">Event Image</label>
+            <input type="file" class="form-control" id="imageFile" name="imageFile">
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" id="save-changes">Save changes</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script src="/js/editEvent.js"></script>
