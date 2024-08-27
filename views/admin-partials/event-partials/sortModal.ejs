@@ -1,0 +1,56 @@
+<div
+  class="modal fade"
+  id="sortModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="sortModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="sortModalLabel">Sort Events</h5>
+        <button
+          type="button"
+          class="close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="sort-form">
+          <div class="form-group">
+            <label for="sort-by">Sort By</label>
+            <select class="form-control" id="sort-by" name="sortBy">
+              <option value="name">Event Name</option>
+              <option value="date">Event Date</option>
+              <option value="location">Location</option>
+              <!-- Add more options if needed -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="sort-order">Sort Order</label>
+            <select class="form-control" id="sort-order" name="sortOrder">
+              <option value="asc">Ascending</option>
+              <option value="desc">Descending</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+        <button type="button" class="btn btn-primary" id="apply-sort">
+          Apply Sort
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
