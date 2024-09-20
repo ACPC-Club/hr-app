@@ -74,15 +74,23 @@ document.addEventListener("DOMContentLoaded", () => {
         method: "POST",
         body: formData,
       })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.success) {
-            location.reload(); // Reload the page to see the new blog
+        .then(response => {
+          // Check if the response is JSON
+          if (response.headers.get("content-type")?.includes("application/json")) {
+            return response.json();
           } else {
-            alert("Failed to add blog.");
+            throw new Error("Server did not return JSON");
           }
         })
-        .catch((error) => {
+        .then(data => {
+          if (data.success) {
+            alert("Blog added successfully!");
+            location.reload(); // Reload the page to see the new blog
+          } else {
+            alert("Failed to add blog: " + data.message);
+          }
+        })
+        .catch(error => {
           console.error("Error:", error);
           alert("An error occurred while adding the blog.");
         });

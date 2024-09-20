@@ -44,7 +44,7 @@ app.get("/members", (req, res) => {
 
 app.get("/blogs", blogController.blogList); // Assumes you have a 'blogs.ejs' file in your 'views' directory
 
-app.post("/blogs/add", blogController.addBlog); // Route to add a new blog
+app.post("/blogs/add", upload.single("image"), blogController.addBlog);
 
 app.get("/events", (req, res) => {
   res.render("events"); // Assumes you have a 'events.ejs' file in your 'views' directory
