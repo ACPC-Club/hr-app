@@ -44,28 +44,31 @@ document.addEventListener("DOMContentLoaded", () => {
         blogTableBody.innerHTML = "";
         data.forEach((blog) => {
           const row = `<tr>
-                <td>${blog.title}</td>
-                <td>${blog.author}</td>
-                <td>${blog.brief}</td>
-                <td>${new Date(blog.date).toDateString()}</td>
-                <td>
-                  <div class="btn-group" role="group">
-                    <a
-                      href="#"
-                      class="btn btn-outline-primary btn-sm edit-blog-btn"
-                      data-bs-toggle="modal"
-                      data-bs-target="#editBlogModal${blog._id}"
-                      data-blog-id="${blog._id}"
-                      >Edit</a
-                    >
-                    <form action="/admin/blogs/delete/${
-                      blog._id
-                    }" method="POST" class="d-inline">
-                      <button type="submit" class="btn btn-outline-danger btn-sm delete-blog-btn">Delete</button>
-                    </form>
-                  </div>
-                </td>
-              </tr>`;
+            <td>${blog.title}</td>
+            <td>${blog.author}</td>
+            <td>${blog.brief}</td>
+            <td>${new Date(blog.date).toDateString()}</td>
+            <td>
+              <div class="btn-group" role="group">
+                <a
+                  href="#"
+                  class="btn btn-outline-primary btn-sm edit-blog-btn"
+                  data-bs-toggle="modal"
+                  data-bs-target="#editBlogModal${blog._id}"
+                  data-blog-id="${blog._id}">
+                  Edit</a>
+                <a
+                  href="#"
+                  class="btn btn-outline-info btn-sm view-blog-btn"
+                  data-bs-toggle="modal"
+                  data-bs-target="#viewBlogModal${blog._id}"
+                  data-blog-id="${blog._id}">View</a>
+                <form action="/admin/blogs/delete/${blog._id}" method="POST" class="d-inline">
+                  <button type="submit" class="btn btn-outline-danger btn-sm delete-blog-btn">Delete</button>
+                </form>
+              </div>
+            </td>
+          </tr>`;
           blogTableBody.insertAdjacentHTML("beforeend", row);
         });
 
@@ -131,10 +134,38 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchBlogs(1);
 
   // Handle the click event for edit buttons
-  blogTableBody.addEventListener("click", (event) => {
-    if (event.target.classList.contains("edit-blog-btn")) {
+  
+   
+
+
+  // Handle the click event for view buttons
+  blogTableBody.addEventListener("click", async (event) => {
+    
+    if (event.target.classList.contains("view-blog-btn")) {
+      event.preventDefault();
       const blogId = event.target.getAttribute("data-blog-id");
-      // You can add any necessary logic here, for example, loading the blog data into the edit form.
+
+      try {
+        const response = await fetch(`/admin/api/blogs/${blogId}`);
+        const blog = await response.json();
+
+        if (blog) {
+          // Populate the modal fields
+          document.getElementById("view-blog-title").textContent = blog.title;
+          document.getElementById("view-blog-author").textContent = blog.author;
+          document.getElementById("view-blog-brief").textContent = blog.brief;
+          document.getElementById("view-blog-date").textContent = blog.date;
+
+          // Set the href for the "View on Separate Page" button
+          document.getElementById("view-on-page-btn").href = `/admin/blogs/view/${blog._id}`;
+
+          // Now open the modal for the corresponding blog
+          const modal = new bootstrap.Modal(document.getElementById(`viewBlogModal${blog._id}`));
+          modal.show();
+        }
+      } catch (error) {
+        console.error("Error fetching blog details:", error);
+      }
     }
   });
 });

@@ -84,7 +84,14 @@
                     data-bs-target="#editBlogModal<%= blog._id %>"
                     data-blog-id="<%= blog._id %>"
                     >Edit</a
-                  >
+                  ><a
+                  href="#"
+                  class="btn btn-outline-info btn-sm view-blog-btn"
+                  data-bs-toggle="modal"
+                  data-bs-target="#viewBlogModal<%= blog._id %>"
+                  data-blog-id="<%= blog._id %>"
+                >View</a>
+                
                   <form
                     action="/admin/blogs/delete/<%= blog._id %>"
                     method="POST"
@@ -118,6 +125,8 @@
     include("./admin-partials/blog-partials/editBlogModal.ejs") %> <%-
     include("./admin-partials/blog-partials/filterModal.ejs") %> <%-
     include("./admin-partials/blog-partials/sortModal.ejs") %>
+    <%-
+    include("./admin-partials/blog-partials/viewBlogModal.ejs") %>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="/js/blogManagement.js"></script>

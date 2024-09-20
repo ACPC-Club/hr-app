@@ -46,6 +46,13 @@ app.get("/blogs", blogController.blogList); // Assumes you have a 'blogs.ejs' fi
 
 app.post("/blogs/add", upload.single("image"), blogController.addBlog);
 
+// Add route to fetch blog data for table display
+app.get("/api/blogs", blogController.getBlogs); // API route for fetching blogs
+
+app.get("/admin/api/blogs/:id", blogController.viewBlog);
+
+
+
 app.get("/events", (req, res) => {
   res.render("events"); // Assumes you have a 'events.ejs' file in your 'views' directory
 });
